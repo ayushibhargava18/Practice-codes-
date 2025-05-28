@@ -1,0 +1,26 @@
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int arr[]={1,2,3,4,5};
+    int n=sizeof(arr)/sizeof(arr[0]);
+    int k=2;
+    int array[k];
+    for(int l=0;l<k;l++){
+        array[l]=arr[l];
+    }
+    for(int i=0;i<n-k;i++){
+        arr[i]=arr[i+k];
+    }
+    
+    for(int l=0;l<n-k;l++){
+        cout<<arr[l]<<" ";
+    }
+    for(int m=0;m<k;m++){
+        cout<<array[m]<<" ";
+    }
+    
+    return 0;
+}
