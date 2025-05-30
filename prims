@@ -1,0 +1,40 @@
+
+import heapq
+
+def prim(n, graph):
+    mst = []
+    total_cost = 0
+    visited = [False] * n
+    min_heap = [(0, 0, -1)]  
+
+    while min_heap:
+        cost, u, parent = heapq.heappop(min_heap)
+        if visited[u]:
+            continue
+        visited[u] = True
+        if parent != -1:
+            mst.append((parent, u, cost))
+            total_cost += cost
+
+        for v, weight in graph[u]:
+            if not visited[v]:
+                heapq.heappush(min_heap, (weight, v, u))
+
+    print("Minimum spanning tree of the given graph will contain:")
+    for u, v, weight in mst:
+        print(f"Edge ({u}, {v}) with weight {weight}")
+    print(f"\nTotal cost of MST: {total_cost}")
+
+n = 8
+graph = {
+    0: [(1, 4), (4, 4)],
+    1: [(0, 4), (2, 3), (4, 2)],
+    2: [(1, 3), (3, 2), (5, 1)],
+    3: [(2, 2), (5, 2)],
+    4: [(0, 4), (1, 2), (6, 3)],
+    5: [(2, 1), (3, 2), (7, 4)],
+    6: [(4, 3), (7, 4)],
+    7: [(5, 4), (6, 4)]
+}
+prim(n, graph)
+

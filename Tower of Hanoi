@@ -1,0 +1,41 @@
+Input 
+
+#include <stdio.h>
+
+void hanoi(int n, char ini, char aux, char final)
+{
+    if(n==1)
+    {
+        printf("%c to %c \n",ini,final);
+        return;
+    }
+    
+    hanoi(n-1,ini, final, aux);
+    printf("%c to %c \n", ini, final);
+    hanoi(n-1,aux, ini, final);
+}
+
+int main()
+{
+    int z;
+    printf("enter a number");
+    scanf("%d", &z);
+    hanoi(z,'q','w','e');
+    return 0;
+}
+
+
+Output 
+
+enter a number 3  
+q to e 
+q to w 
+e to w 
+q to e 
+w to q 
+w to e 
+q to e 
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
