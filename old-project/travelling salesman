@@ -1,0 +1,85 @@
+import math
+
+def row_min(matrix, i, exclude_col):
+    min_val = math.inf
+    for j in range(len(matrix)):
+        if j != exclude_col and matrix[i][j] < min_val:
+            min_val = matrix[i][j]
+    return min_val
+
+def col_min(matrix, j, exclude_row):
+    min_val = math.inf
+    for i in range(len(matrix)):
+        if i != exclude_row and matrix[i][j] < min_val:
+            min_val = matrix[i][j]
+    return min_val
+
+def reduce_matrix(matrix):
+    reduction_cost = 0
+
+    for i in range(len(matrix)):
+        min_row_val = min(matrix[i])
+        if min_row_val != math.inf and min_row_val != 0:
+            reduction_cost += min_row_val
+            for j in range(len(matrix)):
+                if matrix[i][j] != math.inf:
+                    matrix[i][j] -= min_row_val
+
+    for j in range(len(matrix)):
+        min_col_val = min([matrix[i][j] for i in range(len(matrix))])
+        if min_col_val != math.inf and min_col_val != 0:
+            reduction_cost += min_col_val
+            for i in range(len(matrix)):
+                if matrix[i][j] != math.inf:
+                    matrix[i][j] -= min_col_val
+
+    return reduction_cost, matrix
+
+def tsp_branch_and_bound(matrix, start):
+    n = len(matrix)
+    
+    initial_cost, reduced_matrix = reduce_matrix([row[:] for row in matrix])
+
+    path = [start]
+    total_cost = initial_cost
+    current_city = start
+
+    visited = {start}
+
+    while len(path) < n:
+        next_city = None
+        min_cost = math.inf
+
+        for city in range(n):
+            if city not in visited and reduced_matrix[current_city][city] < min_cost:
+                min_cost = reduced_matrix[current_city][city]
+                next_city = city
+
+        if next_city is None:
+            return math.inf, [] 
+        
+        path.append(next_city)
+        visited.add(next_city)
+        total_cost += min_cost
+        current_city = next_city
+
+        total_cost += reduce_matrix(reduced_matrix)[0]
+
+    total_cost += matrix[current_city][start]
+    path.append(start)
+
+    return total_cost, path
+
+
+cost_matrix = [
+    [math.inf, 10, 15, 20],
+    [10, math.inf, 35, 25],
+    [15, 35, math.inf, 30],
+    [20, 25, 30, math.inf]
+]
+
+start_city = 0  
+min_cost, tsp_path = tsp_branch_and_bound(cost_matrix, start_city)
+
+print("Minimum cost:", min_cost)
+print("TSP Path:", tsp_path)

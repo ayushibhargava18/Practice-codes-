@@ -1,0 +1,37 @@
+def linear(arr, n, value):  
+  
+    for i in range(0, n):  
+        if (arr[i] == value):  
+            print("Linear search Element found at", i+1)
+    return -1  
+
+def binary(arr, left, right, value):
+ 
+    if left<=right:
+ 
+        mid = (right+ left) // 2
+ 
+        if arr[mid] == value:
+            return mid
+            
+        elif arr[mid] > value:
+            return binary(arr, left, mid - 1, value)
+ 
+        else:
+            return binary(arr, mid + 1, right, value)
+ 
+    else:+
+        return -1
+ 
+arr = [23,45,67,89]  
+value = 67
+  
+n = len(arr)  
+linear(arr, n, value) 
+result = binary(arr, 0, n-1, value)
+ 
+if result != -1:
+    pos=result+1
+    print("binary search Element is found at", str(pos))
+else:
+    print("Element is not present in array")

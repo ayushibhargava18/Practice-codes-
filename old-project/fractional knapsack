@@ -1,0 +1,35 @@
+def ratios(weights,values):    
+    ratio=[]
+    itemno=len(values)
+    for i in range(itemno):
+        r = values[i]/weights[i]
+        items = (r, weights[i], values[i])
+        ratio.append(items)
+    return ratio
+
+def knapsack(weights, values, capacity):
+    ratio = ratios(weights,values)
+    
+    ratio.sort(reverse=True)
+    
+    valuesum = 0
+    weightsum=0
+    
+    for r in ratio:
+        perweight, weight, value = r
+        if weightsum + weight <= capacity:
+            weightsum = weightsum + weight
+            valuesum = valuesum + value
+        else:
+            remainingcap = capacity - weightsum
+            valuesum =valuesum + perweight * remainingcap
+            break
+
+    return valuesum
+    
+weights = [10,20,30]
+values = [60,100,120]
+capacity = 50
+
+maxvalue = knapsack(weights, values, capacity)
+print("Maximum profit:", {maxvalue})
